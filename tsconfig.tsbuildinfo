@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/types.ts","./src/components/examscreen.tsx","./src/components/resultsscreen.tsx","./src/components/startscreen.tsx","./src/engine/cat.ts","./src/engine/examconfig.ts","./src/hooks/useexam.ts","./src/lib/domainmeta.ts","./src/lib/format.ts","./src/lib/storage.ts"],"version":"5.9.3"}
