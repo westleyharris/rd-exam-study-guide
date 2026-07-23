@@ -231,8 +231,68 @@ button { font-family: inherit; }
 .modal p { color: var(--text-muted); font-size: 14.5px; }
 .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
 
+/* ---------- Study mode ---------- */
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 15px; border-radius: 999px; font-size: 13.5px; font-weight: 600;
+  border: 1.5px solid var(--border-strong); background: var(--surface);
+  color: var(--text-muted); cursor: pointer; transition: all 0.12s;
+}
+.chip:hover { border-color: var(--primary); }
+.chip .dot { width: 10px; height: 10px; border-radius: 3px; }
+.chip-on { border-color: var(--primary); color: var(--primary-dark); background: var(--primary-soft); }
+.chip-primary.chip-on { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.opt-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.opt-card {
+  text-align: left; padding: 16px 18px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-strong); background: var(--surface); cursor: pointer;
+  transition: all 0.12s;
+}
+.opt-card:hover:not(:disabled) { border-color: var(--primary); }
+.opt-card.on { border-color: var(--primary); background: var(--primary-soft); }
+.opt-card:disabled { opacity: 0.45; cursor: not-allowed; }
+.opt-card .oc-label { font-weight: 600; font-size: 14.5px; }
+.opt-card .oc-note { font-size: 12.5px; color: var(--text-faint); margin-top: 3px; }
+
+.option:disabled { cursor: default; }
+.option.opt-correct { border-color: var(--pass); background: var(--pass-soft); }
+.option.opt-correct .marker { background: var(--pass); border-color: var(--pass); color: #fff; }
+.option.opt-wrong { border-color: var(--fail); background: var(--fail-soft); }
+.option.opt-wrong .marker { background: var(--fail); border-color: var(--fail); color: #fff; }
+.opt-flag { margin-left: auto; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; align-self: center; }
+.opt-flag.correct { color: var(--pass); }
+.opt-flag.wrong { color: var(--fail); }
+
+.feedback {
+  margin-top: 20px; padding: 16px 18px; border-radius: var(--radius-sm);
+  font-size: 15px; border: 1px solid var(--border);
+}
+.feedback.ok { background: var(--pass-soft); border-color: transparent; }
+.feedback.no { background: var(--fail-soft); border-color: transparent; }
+.explanation { margin-top: 12px; font-size: 14.5px; color: var(--text); line-height: 1.55; }
+.explanation-label {
+  display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--primary-dark); background: var(--surface);
+  padding: 2px 9px; border-radius: 999px; margin-right: 9px; vertical-align: middle;
+}
+.explanation.muted-note { color: var(--text-muted); font-size: 13.5px; }
+
+.mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.mode-card {
+  text-align: left; padding: 24px; border-radius: var(--radius);
+  border: 1.5px solid var(--border); background: var(--surface); cursor: pointer;
+  transition: all 0.14s; box-shadow: var(--shadow);
+}
+.mode-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.mode-card .mc-icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 22px; margin-bottom: 14px; }
+.mode-card h3 { font-size: 18px; margin-bottom: 6px; }
+.mode-card p { font-size: 13.5px; color: var(--text-muted); }
+.mode-card .mc-go { margin-top: 14px; font-weight: 600; color: var(--primary-dark); font-size: 14px; }
+
 @media (max-width: 640px) {
   .question-card { padding: 22px; }
   .question-stem { font-size: 17px; }
   .score-big { font-size: 58px; }
+  .mode-cards { grid-template-columns: 1fr; }
 }

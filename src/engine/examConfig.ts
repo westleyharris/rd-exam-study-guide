@@ -16,8 +16,12 @@ export const MAX_SCORED_ITEMS = 120;
 /** Unscored pretest items are always exactly this many. */
 export const PRETEST_ITEMS = 25;
 
-/** Exam clock: 3 hours, in seconds. (Appointment is 3.5 hrs incl. tutorial/survey.) */
-export const EXAM_SECONDS = 3 * 60 * 60;
+/**
+ * Exam clock, in seconds. The real CDR exam allows 3 hours; this simulator is
+ * configured for 5 hours to give a more relaxed practice sitting.
+ */
+export const EXAM_HOURS = 5;
+export const EXAM_SECONDS = EXAM_HOURS * 60 * 60;
 
 /** Scaled-score range and the fixed passing standard. */
 export const SCALE_MIN = 1;

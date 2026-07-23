@@ -26,9 +26,9 @@ const STOP_MESSAGES: Record<ExamResult["stopReason"], string> = {
   "max-length":
     "You reached the maximum length. Your ability estimate stayed near the borderline, so the exam ran the full item count before deciding.",
   "time-expired":
-    "The 3-hour clock ran out, but you had answered at least 125 questions, so the exam was scored.",
+    "The clock ran out, but you had answered at least 125 questions, so the exam was scored.",
   "insufficient-time":
-    "The 3-hour clock ran out before you answered the minimum of 125 questions, so the exam is scored as an inconclusive fail (scaled score 2).",
+    "The clock ran out before you answered the minimum of 125 questions, so the exam is scored as an inconclusive fail (scaled score 2).",
 };
 
 export default function ResultsScreen({ result, onRestart }: Props) {

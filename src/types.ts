@@ -23,6 +23,13 @@ export interface Question {
    * real item calibrations — but produces a realistic adaptive experience.
    */
   difficulty: number;
+  /**
+   * Optional study-mode explanation of the correct answer. Present only when a
+   * rationale has been authored for this item; shown after answering in study
+   * mode. The correct answer itself is always verified; the rationale is a
+   * study aid.
+   */
+  explanation?: string;
 }
 
 /** A single administered item during an exam attempt. */
