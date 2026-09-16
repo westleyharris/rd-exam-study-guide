@@ -63,3 +63,57 @@ console.log("\nDomain mix on one exam (target 21/45/21/13):");
 for (const d of [1, 2, 3, 4]) {
   console.log(`  D${d}: ${domainCount[d]}  (${((domainCount[d] / total) * 100).toFixed(0)}%)`);
 }
+
+function runIds(trueTheta: number, avoid: Set<string> = new Set()) {
+  const eng = new ExamEngine(bank, avoid);
+  let q: Question | null = eng.start();
+  const ids: string[] = [];
+  while (q) {
+    ids.push(q.id);
+    const correct = Math.random() < pCorrect(trueTheta, q.difficulty);
+    let resp: OptionKey;
+    if (correct) resp = q.correct;
+    else {
+      const wrong = OPTS.filter((o) => o !== q!.correct);
+      resp = wrong[Math.floor(Math.random() * wrong.length)];
+    }
+    q = eng.answer(resp, 5);
+  }
+  return ids;
+}
+
+function overlapPct(a: string[], b: string[]) {
+  const s = new Set(a);
+  return (100 * b.filter((id) => s.has(id)).length) / Math.min(a.length, b.length);
+}
+
+console.log("\nPairwise overlap, independent exams at theta=0.2 (no memory):");
+{
+  const runs = Array.from({ length: 6 }, () => runIds(0.2));
+  const pairs: number[] = [];
+  for (let i = 0; i < runs.length; i++) {
+    for (let j = i + 1; j < runs.length; j++) pairs.push(overlapPct(runs[i], runs[j]));
+  }
+  const avg = pairs.reduce((a, b) => a + b, 0) / pairs.length;
+  console.log(`  avg ${avg.toFixed(1)}%  range ${Math.min(...pairs).toFixed(0)}-${Math.max(...pairs).toFixed(0)}%`);
+}
+
+console.log("Sequential exams at theta=0.2 with 5-exam exposure memory:");
+{
+  const avoid = new Set<string>();
+  const recent: string[][] = [];
+  const overlaps: number[] = [];
+  let prev: string[] | null = null;
+  for (let i = 0; i < 6; i++) {
+    const ids = runIds(0.2, avoid);
+    if (prev) overlaps.push(overlapPct(prev, ids));
+    prev = ids;
+    recent.unshift(ids);
+    if (recent.length > 5) recent.pop();
+    avoid.clear();
+    for (const exam of recent) for (const id of exam) avoid.add(id);
+  }
+  console.log(
+    `  consecutive overlap ${overlaps.map((n) => n.toFixed(0) + "%").join(" → ")}`,
+  );
+}

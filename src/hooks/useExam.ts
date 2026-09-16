@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ExamEngine } from "../engine/cat";
 import { EXAM_SECONDS } from "../engine/examConfig";
 import bankData from "../data/questions.json";
+import { loadAvoidIds } from "../lib/exposure";
 import type { ExamResult, OptionKey, Question } from "../types";
 
 const BANK = bankData as Question[];
@@ -37,7 +38,7 @@ export function useExam(): UseExam {
   }, []);
 
   const start = useCallback(() => {
-    const engine = new ExamEngine(BANK);
+    const engine = new ExamEngine(BANK, loadAvoidIds());
     engineRef.current = engine;
     const first = engine.start();
     questionShownAt.current = Date.now();

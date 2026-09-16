@@ -5,6 +5,7 @@ import ExamScreen from "./components/ExamScreen";
 import ResultsScreen from "./components/ResultsScreen";
 import StudyMode from "./components/StudyMode";
 import { loadHistory, saveResult, type HistoryEntry } from "./lib/storage";
+import { recordExamIds } from "./lib/exposure";
 import { loadStats, type StudyStats } from "./lib/studyStorage";
 
 type View = "home" | "exam" | "study";
@@ -23,6 +24,7 @@ export default function App() {
   useEffect(() => {
     if (exam.status === "finished" && exam.result) {
       setHistory(saveResult(exam.result));
+      recordExamIds(exam.result.items.map((it) => it.question.id));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exam.status]);

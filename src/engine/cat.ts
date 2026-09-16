@@ -97,6 +97,8 @@ function shuffle<T>(arr: T[]): T[] {
 export class ExamEngine {
   private pool: Map<DomainId, Question[]>;
   private used = new Set<string>();
+  /** IDs from recent sittings — preferred-avoided so mock exams don't repeat. */
+  private avoid: Set<string>;
   private items: AdministeredItem[] = [];
   private theta = 0;
   private se = 1;
@@ -107,7 +109,8 @@ export class ExamEngine {
   private stopReason: StopReason | null = null;
   private startedAt = Date.now();
 
-  constructor(bank: Question[]) {
+  constructor(bank: Question[], avoidIds: Iterable<string> = []) {
+    this.avoid = new Set(avoidIds);
     // Bucket the bank by domain, shuffled for variety across attempts.
     this.pool = new Map([
       [1, [] as Question[]],
@@ -272,22 +275,39 @@ export class ExamEngine {
   }
 
   /**
-   * From a domain, select the unused item whose difficulty maximizes Fisher
-   * information at the current ability estimate, with light randomization among
-   * the top candidates so repeated attempts differ.
+   * Progressive randomesque window: wide early (exposure control), tighter
+   * later (precise measurement). Operational CAT programs do the same so the
+   * handful of items nearest the passing standard are not over-administered.
+   * 40 candidates at item 1 → 8 candidates by item 125.
+   */
+  private randomesqueK(): number {
+    const progress = Math.min(1, this.items.length / MIN_TOTAL_ITEMS);
+    return Math.round(40 - 32 * progress);
+  }
+
+  /**
+   * From a domain, select an unused item that maximizes Fisher information at
+   * the current ability estimate. Prefers items not seen in recent sittings;
+   * if those are exhausted, falls back to the remaining unused pool. Light
+   * randomization among the top-K keeps two similar-ability exams from
+   * drawing the same handful of items.
    */
   private pickByInformation(domain: DomainId): Question | null {
-    const candidates = this.pool
-      .get(domain)!
-      .filter((q) => !this.used.has(q.id));
-    if (candidates.length === 0) return null;
-    candidates.sort(
-      (a, b) =>
-        information(this.theta, b.difficulty) -
-        information(this.theta, a.difficulty),
-    );
-    const topK = candidates.slice(0, Math.min(8, candidates.length));
-    return topK[Math.floor(Math.random() * topK.length)];
+    const unused = this.pool.get(domain)!.filter((q) => !this.used.has(q.id));
+    if (unused.length === 0) return null;
+
+    const rank = (cands: Question[]): Question => {
+      const sorted = cands.slice().sort(
+        (a, b) =>
+          information(this.theta, b.difficulty) -
+          information(this.theta, a.difficulty),
+      );
+      const k = Math.min(Math.max(this.randomesqueK(), 8), sorted.length);
+      return sorted[Math.floor(Math.random() * k)];
+    };
+
+    const fresh = unused.filter((q) => !this.avoid.has(q.id));
+    return rank(fresh.length > 0 ? fresh : unused);
   }
 
   private pickAnyUnused(): Question | null {
