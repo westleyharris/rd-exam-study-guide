@@ -73,14 +73,80 @@ button { font-family: inherit; }
   gap: 12px;
   margin-bottom: 32px;
 }
-.topbar .logo {
-  width: 40px; height: 40px; border-radius: 11px;
-  background: var(--primary); color: #fff;
-  display: grid; place-items: center; font-weight: 800; font-size: 20px;
-  flex-shrink: 0;
-}
 .topbar .brand { font-size: 19px; font-weight: 700; }
 .topbar .brand small { display: block; font-size: 12.5px; color: var(--text-muted); font-weight: 500; letter-spacing: 0; }
+
+.brand-photos {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.brand-photos .photo-main,
+.brand-photos .photo-pnut {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 0 0 3px var(--bg);
+}
+.brand-photos .photo-pnut {
+  margin-left: -14px;
+  position: relative;
+  z-index: 1;
+}
+
+.home-dedication {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 40px;
+  color: var(--text-muted);
+  font-size: 14.5px;
+  font-weight: 500;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.home-dedication p { margin: 0; line-height: 1.55; }
+.dedication-photos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dedication-photo {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 3px var(--bg), var(--shadow);
+  flex-shrink: 0;
+}
+.dedication-photo + .dedication-photo { margin-left: -18px; }
+.photo-beach { object-position: 50% 42%; }
+.photo-cat {
+  object-position: 32% 55%;
+  filter: brightness(1.22) contrast(1.12);
+}
+
+.result-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 16px;
+  display: block;
+  box-shadow: var(--shadow);
+}
+.result-note {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  color: var(--text);
+}
 
 /* ---------- Cards & primitives ---------- */
 .card {

@@ -5,6 +5,8 @@ import { DOMAIN_COLORS, DOMAIN_SHORT, DOMAIN_WEIGHT_PCT } from "../lib/domainMet
 import { clearHistory, type HistoryEntry } from "../lib/storage";
 import { type StudyStats } from "../lib/studyStorage";
 import { formatDate, formatDuration } from "../lib/format";
+import BrandHeader from "./BrandHeader";
+import { beachPhoto, pnutPhoto } from "../photos";
 
 const BANK = bankData as Question[];
 
@@ -40,13 +42,7 @@ export default function StartScreen({ history, studyStats, onStartExam, onStudy,
 
   return (
     <div className="app-shell">
-      <div className="topbar">
-        <div className="logo">RD</div>
-        <div className="brand">
-          RD Exam Simulator
-          <small>Registered Dietitian registration exam — adaptive practice</small>
-        </div>
-      </div>
+      <BrandHeader />
 
       {/* Mode selection */}
       <div className="mode-cards">
@@ -178,20 +174,24 @@ export default function StartScreen({ history, studyStats, onStartExam, onStudy,
         </div>
       )}
 
-      <p className="muted center" style={{ fontSize: 12.5, marginTop: 24, maxWidth: 640, marginLeft: "auto", marginRight: "auto" }}>
-        Practice questions are drawn from the Jean Inman review materials for personal study. Item
-        difficulties are simulated (CDR does not publish real calibrations); scaled scores are an
-        estimate, not an official CDR result.
-      </p>
+      <div className="home-dedication">
+        <div className="dedication-photos">
+          <img src={beachPhoto} alt="Arely on the beach" className="dedication-photo photo-beach" />
+          <img src={pnutPhoto} alt="Pnut" className="dedication-photo photo-cat" />
+        </div>
+        <p>
+          Made for Arely <span aria-hidden="true">·</span> Hey babe! Love you and proud of all your hard work! Keep it up you are going to do amazing things! Love Wes :)
+        </p>
+      </div>
 
       {confirming && (
         <div className="modal-overlay" onClick={() => setConfirming(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h3>Start the timed exam?</h3>
             <p>
-              The clock starts immediately and runs continuously. You won't be able
-              to pause, go back, or change answers — just like the real exam. Set
-              aside uninterrupted time before you begin.
+              You've got this, Arely. The clock starts immediately and runs continuously.
+              You won't be able to pause, go back, or change answers — just like the real exam.
+              Set aside uninterrupted time before you begin.
             </p>
             <div className="modal-actions">
               <button className="btn btn-ghost" onClick={() => setConfirming(false)}>Not yet</button>

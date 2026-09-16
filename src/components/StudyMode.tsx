@@ -9,6 +9,7 @@ import {
   toggleBookmark,
   updateMissed,
 } from "../lib/studyStorage";
+import BrandHeader from "./BrandHeader";
 
 const BANK = bankData as Question[];
 const OPTS: OptionKey[] = ["a", "b", "c", "d"];
@@ -334,11 +335,9 @@ function StudyConfig(props: {
 
   return (
     <div className="app-shell">
-      <div className="topbar">
-        <div className="logo">RD</div>
-        <div className="brand">Study Mode<small>Practice with immediate feedback</small></div>
+      <BrandHeader subtitle="Study mode · practice with immediate feedback">
         <button className="btn btn-ghost" style={{ marginLeft: "auto" }} onClick={props.onExit}>← Home</button>
-      </div>
+      </BrandHeader>
 
       <div className="card">
         <div className="section-title">Content domains</div>
@@ -426,14 +425,11 @@ function StudySummary(props: {
 
   return (
     <div className="app-shell">
-      <div className="topbar">
-        <div className="logo">RD</div>
-        <div className="brand">Study session complete<small>Nice work</small></div>
-      </div>
+      <BrandHeader subtitle="Study session complete" />
 
       <div className="card result-hero">
         <div className="score-big">{acc}<span className="of">%</span></div>
-        <div className="score-caption">{correct} of {total} correct</div>
+        <div className="score-caption">Nice work, Arely — {correct} of {total} correct</div>
       </div>
 
       {byDomain.length > 0 && (

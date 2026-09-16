@@ -12,6 +12,8 @@ import type { DomainId, ExamResult } from "../types";
 import { DOMAIN_COLORS, DOMAIN_SHORT } from "../lib/domainMeta";
 import { formatDuration } from "../lib/format";
 import { PASSING_SCALED } from "../engine/examConfig";
+import BrandHeader from "./BrandHeader";
+import { beachPhoto } from "../photos";
 
 interface Props {
   result: ExamResult;
@@ -56,15 +58,19 @@ export default function ResultsScreen({ result, onRestart }: Props) {
 
   return (
     <div className="app-shell">
-      <div className="topbar">
-        <div className="logo">RD</div>
-        <div className="brand">
-          RD Exam Simulator
-          <small>Score report</small>
-        </div>
-      </div>
+      <BrandHeader subtitle="Score report" />
 
       <div className="card result-hero">
+        {passed && (
+          <>
+            <img
+              src={beachPhoto}
+              alt="Arely on the beach"
+              className="result-photo photo-beach"
+            />
+            <p className="result-note">You did it, Arely.</p>
+          </>
+        )}
         <div className={`result-badge ${passed ? "pass" : "fail"}`}>
           {passed ? "● Pass" : "● Did not pass"}
         </div>
